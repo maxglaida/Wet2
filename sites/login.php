@@ -18,7 +18,7 @@ if (isset($_POST['login'])) {
 ?>
 
     <div class="container">
-        <form class="form-signin" action="login.php" method="post">
+        <form class="form-signin" action="index.php?id=3" method="post">
             <h2 class="form-signin-heading">User login</h2>
             <input type="text" id="usern" name="username" class="form-control" placeholder="Username" required >
             <input type="password" id="pass" name="password" class="form-control" placeholder="Password" required>

@@ -1,8 +1,5 @@
 <?php
-include '../inc/head.php';
-include '../inc/navigation.php';
 include '../model/User.php';
-session_start();
 $username = $_SESSION['username'];
 $personId = $_SESSION['personid'];
 $user = $db->getUserInfo($personId);
@@ -43,21 +40,19 @@ if (isset($_POST['submit'])) {
     if (isset($_POST['city']) && !empty($_POST['city'])) {
         $city = $_POST['city'];
     }
-    if (isset($_POST['username']) && !empty($_POST['username'])) {
-        $username = $_POST['username'];
-    }
+
     if (isset($_POST['password']) && !empty($_POST['password'])) {
         $hashPass = md5($_POST['password']);
     }
     if (isset($_POST['payment']) && !empty($_POST['payment'])) {
         $payment = $_POST['payment'];
     }
-    //$db->updateUser($personId, $gender, $name, $surname, $email, $address, $zip, $city, $username, $hashPass, $payment);
+    $db->updateUser($personId, $gender, $name, $surname, $email, $address, $zip, $city, $username, $hashPass, $payment);
 }
 ?>
 <div class="container">
     <h2><?php echo $username ?></h2>
-    <form class="form-horizontal" action="myAccount.php" method="post">
+    <form class="form-horizontal" action="index.php?id=4" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label">Gender</label>
             <div class="col-sm-8">
@@ -118,12 +113,6 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">Username</label>
-            <div class="col-sm-8">
-                <input type="text" name="username" class="form-control" id="username" placeholder="<?php echo $username ?>">
-            </div>
-        </div>
-        <div class="form-group">
             <label class="col-sm-2 control-label">Password</label>
             <div class="col-sm-8">
                 <input type="password" name="password" class="form-control" id="password" placeholder="<?php echo $password ?>"
@@ -143,16 +132,6 @@ if (isset($_POST['submit'])) {
     $("input[name=payment][value='<?php echo $payment ?>']").prop("checked", true);
 
     //    DOESNT WORK
-    function showPopup() {
-        var password;
-        var pass1 = "<?php echo $hashPass ?>";
-        password = prompt('Authorisation needed!', '');
-        if (password == pass1)
-            alert('Correct password, click OK to enter.');
-        else
-        {
-            return false;
-        }
-    }
+
 </script>
 

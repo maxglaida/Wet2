@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
     ?>
     <div class="container">
         <h2>User Registration</h2>
-        <form class="form-horizontal" action="register.php" method="post">
+        <form class="form-horizontal" action="index.php?id=2" method="post">
 
 
             <div class="form-group">
@@ -150,6 +150,7 @@ if (isset($_POST['submit'])) {
             </div>
         </form>
     </div>
+
     <!-- password match check !-->
     <script type="text/javascript">
         function validatePasswordMatch() {
