@@ -113,7 +113,6 @@ class DB
                 $cat = $zeile->category;
                 $id = $zeile->p_id;
             }
-            session_start();
             $_SESSION['username'] = $username;
             $_SESSION['priviliges'] = $cat;
             $_SESSION['personid'] = $id;
