@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<navigation>
+    <visitor>
+        <menu>
+            <title>Products</title>
+            <link>index.php?id=1</link>
+        </menu>
+        <menu>
+            <title>Register</title>
+            <link>index.php?id=2</link>
+        </menu>
+        <menu>
+            <title>Login</title>
+            <link>index.php?id=3</link>
+        </menu>
+    </visitor>
+    <user>
+        <menu>
+            <title>Products</title>
+            <link>index.php?id=1</link>
+        </menu>
+        <menu>
+            <title>My Account</title>
+            <link>index.php?id=4</link>
+        </menu>
+        <menu>
+            <title>Logout</title>
+            <link>index.php?id=5</link>
+        </menu>
+    </user>
+    <admin>
+        <menu>
+            <title>Products</title>
+            <link>index.php?id=1</link>
+        </menu>
+        <menu>
+            <title>Product Management</title>
+            <link>index.php?id=6</link>
+        </menu>
+        <menu>
+            <title>User Management</title>
+            <link>index.php?id=7</link>
+        </menu>
+        <menu>
+            <title>Vouchers Management</title>
+            <link>index.php?id=8</link>
+        </menu>
+        <menu>
+            <title>Logout</title>
+            <link>index.php?id=5</link>
+        </menu>
+    </admin>
+</navigation>

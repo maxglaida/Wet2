@@ -1,0 +1,62 @@
+body{
+    padding-top: 50px;
+}
+
+#headerWrapper{
+    position: relative;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    height:600px;
+    background-image: url(../img/logosbackground//454233.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 700px;
+    background-position: top center;
+    background-attachment: fixed;
+
+}
+
+.center {
+    align-items: center;
+}
+
+#tattoo {
+    position: absolute;
+    width: 100%;
+    height: 180px;
+    background-image: url(../img/logosbackground/oh-my-veggies.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 30%;
+
+}
+.floatleft {
+    color: greenyellow;
+
+}
+
+.productheading {
+    padding-top: 40px;
+
+}
+
+.img-thumb{
+    width:auto;
+    height: 200px;
+
+}
+
+#footer {
+    margin-top:50px;
+}
+
+img.details{
+    width: 33%;
+    margin: 15px auto;
+
+}
+
+
+
+
+
