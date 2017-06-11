@@ -1,21 +1,21 @@
 <?php
-include_once '../utility/DB.php';
-$db = new DB();
+    include_once '../utility/DB.php';
+    $db = new DB();
 
 
-$pw = null;
-$user = null;
+    $pw = null;
+    $user = null;
 
-if (isset($_POST['login'])) {
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        if (isset($_POST['rememberme'])) {
-            setcookie('username', $_POST['username']);
-            setcookie('password', $_POST['password']);
+    if (isset($_POST['login'])) {
+        if (isset($_POST['username']) && isset($_POST['password'])) {
+            if (isset($_POST['rememberme'])) {
+                setcookie('username', $_POST['username']);
+                setcookie('password', $_POST['password']);
+            }
+            $db->checkUser($_POST['username'], md5($_POST['password']));
         }
-        $db->checkUser($_POST['username'], md5($_POST['password']));
     }
-}
-?>
+    ?>
 
     <div class="container">
         <form class="form-signin" action="index.php?id=3" method="post">
@@ -32,12 +32,13 @@ if (isset($_POST['login'])) {
 
     </div>
 
-<?php
-if (isset($_COOKIE['username']) & isset($_COOKIE['password'])) {
-    $user = $_COOKIE['username'];
-    $pass = $_COOKIE['password'];
-    echo ("<script language='JavaScript'>
+    <?php
+    if (isset($_COOKIE['username']) & isset($_COOKIE['password'])) {
+        $user = $_COOKIE['username'];
+        $pass = $_COOKIE['password'];
+        echo ("<script language='JavaScript'>
           document.getElementById('usern').value= '$user';
           document.getElementById('pass').value= '$pass';
               </script>");
-}?>
+    }
+?>

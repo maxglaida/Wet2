@@ -24,6 +24,8 @@ if (isset($_GET['id'])) {
         include_once 'userManagement.php';
     } elseif ($_GET['id'] == 8) {
         include_once 'voucherManagement.php';
+    }else if ($_GET['id'] == 9){
+        include_once'userOrders.php';
     }
 } else include_once 'homepage.php';
 
