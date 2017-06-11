@@ -49,12 +49,12 @@ class DB
 
         foreach ($productArray as $product) {
 
-            echo "<div class='col-md-3'>";
+            echo "<div class='col-md-3 draggable' id='".$product->getId()."'>";
             echo "<h4 class='productheading'>" . $product->getName() . "</h4>";
             echo "<img src='../" . $product->getPicture() . "' alt='Tomato' class='img-thumb' />";
             echo "<p class='price'>Price $" . $product->getPrice() . "</p>";
             echo "<p class='price'>Rating:" . $product->getRating() . "</p>";
-            echo "<button class='btn btn-warning' type='submit'><span class='glyphicon glyphicon-shopping-cart'></span>Add To Cart</button>";
+            echo "<button class='btn btn-warning' onclick='addProductsToCart(".$product->getId().")' type='submit'><span class='glyphicon glyphicon-shopping-cart'></span>Add To Cart</button>";
             echo "</div >";
         }
     }
@@ -74,7 +74,7 @@ class DB
 
         foreach ($productArray as $product) {
 
-            echo "<div class='col-md-3'>";
+            echo "<div class='col-md-3' id='draggable'>";
             echo "<h4 class='productheading'>" . $product->getName() . "</h4>";
             echo "<img src='../" . $product->getPicture() . "' alt='Tomato' class='img-thumb' />";
             echo "<p class='price'>Price $" . $product->getPrice() . "</p>";

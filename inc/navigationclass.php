@@ -28,7 +28,7 @@ class navigation{
 
 
 <nav class="navbar navbar-default navbar-fixed-top">
-
+<div class="container-fluid">
     <a href="index.php" class="navbar-brand">Veggies</a>
     <ul class="nav navbar-nav">
 
@@ -46,10 +46,13 @@ class navigation{
         $nav->loadXML($who);
 
         ?>
-
-
-        <li><a href="#"><span class="floatleft glyphicon glyphicon-shopping-cart" id="pullrightnav" aria-hidden="true" title="Shopping Cart"></span></a></li>
+    </ul>
+    <div class="droppable">
+    <ul id="warenkorb" class="nav navbar-nav navbar-right">
+            <li role="presentation"><a href="#">Shopping Cart  <span class="badge"><?php if(isset($_SESSION['Anz'])) echo $_SESSION['Anz']; ?></span></a></li>
+    <div>
 
     </ul>
+</div>
 
 </nav>

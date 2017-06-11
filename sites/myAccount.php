@@ -1,8 +1,5 @@
 <?php
-include '../inc/head.php';
-include '../inc/navigation.php';
 include '../model/User.php';
-session_start();
 $username = $_SESSION['username'];
 $personId = $_SESSION['personid'];
 $user = $db->getUserInfo($personId);
