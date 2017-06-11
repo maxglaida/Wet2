@@ -1,5 +1,4 @@
 <?php
-session_start();
 $username = $_SESSION['username'];
 if (isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
     setcookie("username", "", time() - 3600);
