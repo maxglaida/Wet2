@@ -29,10 +29,6 @@ class Produkt {
         $this->featured = $featured;
     }
 
-    public function getOrder() {
-        return $this->order;
-    }
-
     /**
      * @return null
      */

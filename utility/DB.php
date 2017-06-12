@@ -8,8 +8,8 @@ class DB {
 
     private $host = "localhost";
     private $user = "root";
-    private $pwd = "MtWBUGZKZL1Np8bk";
-    private $dbname = "Wet2";
+    private $pwd = "12345";
+    private $dbname = "webshop";
     private $dbobjekt = null;
 
     function connectToDB() {
