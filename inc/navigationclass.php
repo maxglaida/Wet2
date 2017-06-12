@@ -49,7 +49,7 @@ class navigation{
     </ul>
     <div class="droppable">
     <ul id="warenkorb" class="nav navbar-nav navbar-right">
-            <li role="presentation"><a href="#">Shopping Cart  <span class="badge"><?php if(isset($_SESSION['Anz'])) echo $_SESSION['Anz']; ?></span></a></li>
+            <li role="presentation"><a href="index.php?id=10">Shopping Cart  <span class="badge"><?php if(isset($_SESSION['amount'])) echo $_SESSION['amount']; ?></span></a></li>
     <div>
 
     </ul>

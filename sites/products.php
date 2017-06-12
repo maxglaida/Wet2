@@ -19,14 +19,14 @@
     <div class="col-md-12">
         <div class="row">
             <div id="prod">
-
-
             <?php
             $db->getProductList(1);
-
             ?>
 
             </div>
+
+
+
 
 
 

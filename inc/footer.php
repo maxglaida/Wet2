@@ -45,6 +45,16 @@
             }
         );
     }
+    
+    function cartManagement(action, pid) {
+         
+        $.post("cartOptionsManagementAjax.php", {toDo: action, pid: pid},
+            function (data) {
+                $('#ccart').html(data);
+                addProductsToCart();
+            }
+        );
+    }
 
 
     $( function() {
@@ -53,7 +63,6 @@
             tolerance: "touch",
             drop: function (event, ui) {
                 var param = $(ui.draggable).attr('id');
-                alert(param);
                 addProductsToCart(param);
             }
         });

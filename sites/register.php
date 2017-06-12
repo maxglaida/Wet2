@@ -2,6 +2,7 @@
 include '../model/User.php';
 include_once '../utility/DB.php';
 $db = new DB();
+$id=null;
 $gender = null;
 $name = null;
 $surname = null;
@@ -47,7 +48,7 @@ if (isset($_POST['submit'])) {
         $payment = $_POST['payment'];
     }
 
-    $userObject = new User($gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status);
+$userObject = new User($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status);
 
     $db->registerUser($userObject);
 

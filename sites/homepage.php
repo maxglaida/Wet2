@@ -13,7 +13,7 @@
 
                 foreach ($productObjects as $product) {
 
-                    echo "<div class='col-md-3'>";
+                    echo "<div class='col-md-3 draggable' id='".$product->getId()."'>";
                     echo "<h4 class='productheading'>" . $product->getName() . "</h4>";
                     echo "<img src='../" . $product->getPicture() . "' alt='Tomato' class='img-thumb' />";
                     echo "<p class='price'>Price $" . $product->getPrice() . "</p>";

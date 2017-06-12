@@ -3,7 +3,7 @@
 class User {
 
 //put your code here
-
+    private $id = null;
     private $gender = null;
     private $name = null;
     private $surname = null;
@@ -18,10 +18,15 @@ class User {
 
     //getter und setter für den Zugriff auf die Objekt-Eigenschaften
 //In Netbeans automatisch erzeugt via Insert Code...
-    function getStatus(){
+    function getId() {
+        return $this->id;
+    }
+
+    function getStatus() {
         return $this->status;
     }
-    function getPayment(){
+
+    function getPayment() {
         return $this->payment;
     }
 
@@ -61,9 +66,14 @@ class User {
         return $this->password;
     }
 
-    function setStatus(){
+    function setId($id) {
+        $this->id = $id;
+    }
+
+    function setStatus($status) {
         $this->status = $status;
     }
+
     function setGender($gender) {
         $this->gender = $gender;
     }
@@ -80,7 +90,7 @@ class User {
         $this->email = $email;
     }
 
-    function setPayment($payment){
+    function setPayment($payment) {
         $this->payment = $payment;
     }
 
@@ -104,10 +114,10 @@ class User {
         $this->password = $password;
     }
 
-
 //Konstruktor
 //In Netbeans automatisch erzeugt via Insert Code...
-    function __construct($gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status) {
+    function __construct($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status) {
+        $this->id = $id;
         $this->gender = $gender;
         $this->name = $name;
         $this->surname = $surname;

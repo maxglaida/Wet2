@@ -23,7 +23,11 @@ if (isset($_GET['id'])) {
     } elseif ($_GET['id'] == 7) {
         include_once 'userManagement.php';
     } elseif ($_GET['id'] == 8) {
-        include_once 'voucherManagement.php';
+        include_once 'voucherManagementmain.php';
+    }else if ($_GET['id'] == 9){
+        include_once'userOrders.php';
+    }elseif ($_GET['id'] == 10) {
+        include_once 'shoppingCart.php';
     }
 } else include_once 'homepage.php';
 

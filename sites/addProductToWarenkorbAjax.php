@@ -7,43 +7,39 @@ session_start();
  * and open the template in the editor.
  */
 
-$amount = $_POST['amount'];
-$p_id=$_POST['p_id'];
-
-
 if(isset($_POST['p_id'])&&isset($_POST['amount'])&&$_POST['p_id']!=""&&$_POST['amount']!="")
 {
-    $Anzahl;
+    $amount;
     if(is_int($_POST['amount']))
     {
-        $Anzahl= $_POST['amount'];
+        $amount= $_POST['amount'];
     }
     else{
-        $Anzahl = (int) $_POST['amount'];
+        $amount = (int) $_POST['amount'];
     }
     if($_POST['amount']>0)
     {
-        if(isset($_SESSION['wk'][$_POST['p_id']])&&$_SESSION['wk'][$_POST['p_id']]!=null)
+        if(isset($_SESSION['cart'][$_POST['p_id']])&&$_SESSION['cart'][$_POST['p_id']]!=null)
         {
 
-            $_SESSION['wk'][$_POST['p_id']] += $Anzahl;
+            $_SESSION['cart'][$_POST['p_id']] += $amount;
 
         }
         else{
             //Hier wird der Artikel mitsamt Daten gespeichert
-            $_SESSION['wk'][$_POST['p_id']] = $Anzahl;
+            $_SESSION['cart'][$_POST['p_id']] = $amount;
+            if(isset($_SESSION['amount']))
+            {
+                $_SESSION['amount']+=$amount;
 
+            }
+            else{
+                $_SESSION['amount'] = $amount;
+
+            }
+            
         }
 
-        if(isset($_SESSION['Anz']))
-        {
-            $_SESSION['Anz']+=$Anzahl;
-
-        }
-        else{
-            $_SESSION['Anz'] = $Anzahl;
-
-        }
     }
 }
-echo '<li id="warenkorb" class="droppable" role="presentation"><a href="#">Shopping Cart  <span class="badge">'.$_SESSION['Anz'].' </span></a></li>';
+echo '<li id="warenkorb" class="droppable" role="presentation"><a href="index.php?id=10">Shopping Cart  <span class="badge">'.$_SESSION['amount'].' </span></a></li>';

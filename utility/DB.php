@@ -1,23 +1,59 @@
 <?php
+
 include_once '../model/Produkt.php';
 
-class DB
-{
+class DB {
 
     private $host = "localhost";
     private $user = "root";
-    private $pwd = "12345";
-    private $dbname = "Webshop";
+    private $pwd = "";
+    private $dbname = "Wet2";
     private $dbobjekt = null;
 
-    function connectToDB()
-    {
+    function connectToDB() {
         $this->dbobjekt = new mysqli($this->host, $this->user, $this->pwd, $this->dbname);
     }
 
+    function deActivateUser($id, $status) {
+        $this->connectToDB();
+        if ($status == 1) {
+            $query = "update user set status = 0 "
+                    . "where user_id =" . $id;
+        } else {
+            $query = "update user set status = 1 "
+                    . "where user_id =" . $id;
+        }
+        $this->dbobjekt->query($query);
+    }
 
-    function getFeaturedProductsList()
-    {
+    function getUserList() {
+        $this->connectToDB();
+        $userArray = array();
+        $query = "select * from user "
+                . "join person on person.person_id=user.p_id "
+                . "join address on address.address_id=person.a_id where category = 1";
+        $ergebnis = $this->dbobjekt->query($query);
+        while ($zeile = $ergebnis->fetch_object()) {
+            //pro DB-Zeile wird neues User-Objekt erzeugt        }
+            $userObject = new User($zeile->user_id, $zeile->anrede, $zeile->vorname, $zeile->nachname, $zeile->email, $zeile->address, $zeile->zip, $zeile->city, $zeile->username, $zeile->password, $zeile->payment, $zeile->status);
+            //jedes User-Objekt wird in das Array $userArray abgelegt
+            array_push($userArray, $userObject);
+        }
+        return $userArray;
+    }
+    function getProducts($id) {
+        $this->connectToDB();
+        $productArray = array();
+        $query = "SELECT * FROM products WHERE products_id = $id";
+        $ergebnis = $this->dbobjekt->query($query);
+        while ($zeile = $ergebnis->fetch_object()) {
+            
+            $products = new Produkt($zeile->products_id, $zeile->name, $zeile->price, $zeile->categoryid, $zeile->picture, $zeile->rating, $zeile->featured);
+    }
+         return $products;
+    }
+            
+    function getFeaturedProductsList() {
         $this->connectToDB();
         $productArray = array();
         $query = "SELECT * FROM products WHERE Featured = 1";
@@ -32,9 +68,38 @@ class DB
         //Array befüllt mit User-Objekten wird retourniert
         return $productArray;
     }
+    
+    function getAllVouchers() {
+        return $voucherArray;
+    }
+    
+    function setNewVoucher($wert,$date) {
+        
+        $this->connectToDB();
 
-    function getProductList($category)
-    {
+        $query = "INSERT INTO address (address, zip, city) "
+                . "VALUES ('" . $userObjekt->getAddress() . "'," . $userObjekt->getZip() . ",'" . $userObjekt->getCity() . "')";
+        
+    }
+
+    function getOrderInfo($id) {
+
+        $this->connectToDB();
+        $ordersArray = array();
+        $query = "select * from products "
+                . "join orderedproducts on products.products_id=orderedproducts.product_id "
+                . "WHERE invoice_id = $id";
+        $ergebnis = $this->dbobjekt->query($query);
+        while ($zeile = $ergebnis->fetch_object()) {
+            //pro DB-Zeile wird neues User-Objekt erzeugt
+            $Order = new Order($zeile->invoice_id, $zeile->name, $zeile->amount);
+            //jedes User-Objekt wird in das Array $userArray abgelegt
+            array_push($ordersArray, $Order);
+        }
+        return $ordersArray;
+    }
+
+    function getProductList($category) {
 
         $this->connectToDB();
         $productArray = array();
@@ -59,8 +124,7 @@ class DB
         }
     }
 
-    function getSearchedProducts($searchString)
-    {
+    function getSearchedProducts($searchString) {
         $this->connectToDB();
         $productArray = array();
         $query = "SELECT * FROM products WHERE name LIKE '%$searchString%'";
@@ -74,7 +138,7 @@ class DB
 
         foreach ($productArray as $product) {
 
-            echo "<div class='col-md-3' id='draggable'>";
+            echo "<div class='col-md-3 draggable' id='".$product->getId()."'>";
             echo "<h4 class='productheading'>" . $product->getName() . "</h4>";
             echo "<img src='../" . $product->getPicture() . "' alt='Tomato' class='img-thumb' />";
             echo "<p class='price'>Price $" . $product->getPrice() . "</p>";
@@ -84,8 +148,7 @@ class DB
         }
     }
 
-    function getCategories()
-    {
+    function getCategories() {
         $this->connectToDB();
 
         $sql = "SELECT * FROM productcategory";
@@ -101,9 +164,7 @@ class DB
             echo "Es gibt ein fehlar bei zugriff!";
     }
 
-
-    function checkUser($user, $pw)
-    {
+    function checkUser($user, $pw) {
         $this->connectToDB();
         $query = "select * from user where username = '$user' and password = '$pw' and status = 1";
         $ergebnis = $this->dbobjekt->query($query);
@@ -111,11 +172,11 @@ class DB
             while ($zeile = $ergebnis->fetch_object()) {
                 $username = $zeile->username;
                 $cat = $zeile->category;
-                $id = $zeile->p_id;
+                $id = $zeile->user_id;
             }
             $_SESSION['username'] = $username;
             $_SESSION['priviliges'] = $cat;
-            $_SESSION['personid'] = $id;
+            $_SESSION['userid'] = $id;
 
             echo("<script language='JavaScript'>
                    window.alert('Welcome $username!')
@@ -129,14 +190,13 @@ class DB
         }
     }
 
-    function getUserInfo($id)
-    {
+    function getUserInfo($id) {
 
         $this->connectToDB();
         $query = "select * from user "
-            . "join person on user.p_id=person.person_id "
-            . "join address on address.address_id=person.a_id "
-            . "where p_id =$id";
+                . "join person on user.p_id=person.person_id "
+                . "join address on address.address_id=person.a_id "
+                . "where user_id =$id";
         $ergebnis = $this->dbobjekt->query($query);
         while ($zeile = $ergebnis->fetch_object()) {
             $gender = $zeile->anrede;
@@ -152,22 +212,37 @@ class DB
             $status = $zeile->status;
         }
 
-        return $userInfoObject = new User($gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status);
+        return $userInfoObject = new User($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status);
     }
 
-    function registerUser($userObjekt)
-    {
+    function showOrders($userid) {
+        $this->connectToDB();
+        $ordersArray = array();
+        $query = "select invoice_id, datum from bestellung 
+                join user using(user_id)
+                where user_id=$userid";
+        $ergebnis = $this->dbobjekt->query($query);
+        while ($zeile = $ergebnis->fetch_object()) {
+            //pro DB-Zeile wird neues User-Objekt erzeugt
+            $orderid = $zeile->invoice_id;
+            //jedes User-Objekt wird in das Array $userArray abgelegt
+            array_push($ordersArray, $orderid);
+        }
+        return $ordersArray;
+    }
+
+    function registerUser($userObjekt) {
         $this->connectToDB();
 
         $query = "INSERT INTO address (address, zip, city) "
-            . "VALUES ('" . $userObjekt->getAddress() . "'," . $userObjekt->getZip() . ",'" . $userObjekt->getCity() . "')";
+                . "VALUES ('" . $userObjekt->getAddress() . "'," . $userObjekt->getZip() . ",'" . $userObjekt->getCity() . "')";
 
         $this->dbobjekt->query($query);
 
         $a_id = $this->dbobjekt->insert_id;
 
         $query = "INSERT INTO person (a_id, anrede, vorname, nachname, email, payment) "
-            . "VALUES ('" . $a_id . "','" . $userObjekt->getGender() . "','" . $userObjekt->getName() . "','" . $userObjekt->getSurname() . "','" . $userObjekt->getEmail() . "','" . $userObjekt->getPayment() . "')";
+                . "VALUES ('" . $a_id . "','" . $userObjekt->getGender() . "','" . $userObjekt->getName() . "','" . $userObjekt->getSurname() . "','" . $userObjekt->getEmail() . "','" . $userObjekt->getPayment() . "')";
 
         $this->dbobjekt->query($query);
 
@@ -175,44 +250,40 @@ class DB
 
         $hashPw = md5($userObjekt->getPassword());
         $query = "INSERT INTO user ("
-            . "p_id, "
-            . "username, "
-            . "password, "
-            . "status, "
-            . "category) VALUES ("
-            . "'" . $p_id . "', "
-            . "'" . $userObjekt->getUsername() . "', "
-            . "'" . $hashPw . "', "
-            . "'1', "
-            . "1)";
+                . "p_id, "
+                . "username, "
+                . "password, "
+                . "status, "
+                . "category) VALUES ("
+                . "'" . $p_id . "', "
+                . "'" . $userObjekt->getUsername() . "', "
+                . "'" . $hashPw . "', "
+                . "'1', "
+                . "1)";
 
         $this->dbobjekt->query($query);
     }
 
-    function updateUser($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment)
-    {
+    function updateUser($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment) {
         $this->connectToDB();
         $query = "update user set username = '$username', "
-            . "password = '$password' "
-            . "where p_id =" . $id;
+                . "password = '$password' "
+                . "where user_id =" . $id;
         $this->dbobjekt->query($query);
 
-        $query = "update person set anrede = '$gender', "
-            . "vorname = '$name', "
-            . "nachname = '$surname', "
-            . "email = '$email', "
-            . "payment = '$payment' "
-            . "where person_id = " . $id;
+        $query = "update person join user on user.user_id=person.u_id set anrede = '$gender', "
+                . "vorname = '$name', "
+                . "nachname = '$surname', "
+                . "email = '$email', "
+                . "payment = '$payment' "
+                . "where user_id = " . $id;
         $this->dbobjekt->query($query);
 
-        $query = "update address join person on address.address_id=person.a_id set address = '$address', "
-            . "zip = $zip, "
-            . "city = '$city' "
-            . "where person_id = " . $id;
+        $query = "update address join user on user.user_id=address.u_id set address = '$address', "
+                . "zip = $zip, "
+                . "city = '$city' "
+                . "where user_id = " . $id;
         $this->dbobjekt->query($query);
     }
 
 }
-
-
-
