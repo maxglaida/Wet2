@@ -8,7 +8,7 @@ class DB {
 
     private $host = "localhost";
     private $user = "root";
-    private $pwd = "";
+    private $pwd = "MtWBUGZKZL1Np8bk";
     private $dbname = "Wet2";
     private $dbobjekt = null;
 

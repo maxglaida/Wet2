@@ -18,8 +18,9 @@ $sum = 0;
         echo "<td>" . $amount . "</td>";
         echo "<td>" . $Products->getPrice() * $amount . "</td>";
         echo "<td><div ><input type='hidden' name='p_id' value='" . $Products->getId() . "'>"
-        . "<input type='submit' name='toDo' onclick='cartManagement(\"deleteProduct\",$id)' value='Löschen' class='actionCart btn btn-default'><input type='submit' onclick='cartManagement(\"+\",$id)' name='toDo' value='+' class='actionCart btn btn-default'>"
-        . "<input type='submit' onclick='cartManagement(\"-\",$id)' name='toDo' value='-' class='actionCart btn btn-default'></div></td>";
+        . "<input type='submit' name='toDo' onclick='cartManagement(\"deleteProduct\",$id)' value='remove' class='actionCart btn btn-default'><input type='submit' onclick='cartManagement(\"+\",$id)' name='toDo' value='+' class='actionCart btn btn-default'>"
+        . "<input type='submit' onclick='cartManagement(\"-\",$id)' name='toDo' value='-' class='actionCart btn btn-default'>"
+        . "<input type='submit' name='toDo' value='Order' class='actionCart btn btn-default'></div></td>";
 
         $sum += $Products->getPrice() * $amount;
 
