@@ -7,7 +7,7 @@ $db = new DB;
 
 
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     if ($_GET['id'] == 1) {
         include_once 'products.php';
     } elseif ($_GET['id'] == 2) {
@@ -28,7 +28,9 @@ if (isset($_GET['id'])) {
         include_once'userOrders.php';
     }elseif ($_GET['id'] == 10) {
         include_once 'shoppingCart.php';
-    }
+    } else if ($_GET['id'] == 11) {
+    include_once 'billDetails.php';
+}
 } else include_once 'homepage.php';
 
 

@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
         $payment = $_POST['payment'];
     }
 
-$userObject = new User($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status);
+    $userObject = new User($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status);
 
     $db->registerUser($userObject);
 
@@ -114,7 +114,7 @@ $userObject = new User($id, $gender, $name, $surname, $email, $address, $zip, $c
                 <label class="col-sm-2 control-label">Payment method</label>
                 <div class="col-sm-8">
                     <label class="radio-inline">
-                        <input type="radio" id="payment" name="payment" value="Credit Card" required> Credit card
+                        <input type="radio" id="payment" name="payment" value="Credit card" required> Credit card
                     </label>
                     <label class="radio-inline">
                         <input type="radio" id="payment" name="payment" value="Bank transfer"> Bank transfer
