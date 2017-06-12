@@ -1,6 +1,6 @@
 <?php
-include '../model/User.php';
 if ($_SESSION['priviliges'] == 2) {
+    include '../model/User.php';
     if (isset($_GET['userid']) && isset($_GET['status'])) {
         $db->deActivateUser($_GET['userid'], $_GET['status']);
     }

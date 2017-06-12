@@ -10,8 +10,8 @@ class DB
     // in this dB class we have all our function that have an interaction with the DB
     private $host = "localhost";
     private $user = "root";
-    private $pwd = "MtWBUGZKZL1Np8bk";
-    private $dbname = "Wet2";
+    private $pwd = "12345";
+    private $dbname = "webshop";
     private $dbobjekt = null;
     //setting a connection to the db
     function connectToDB()
