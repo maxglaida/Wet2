@@ -1,13 +1,12 @@
 <?php
+
 session_start();
 include_once '../inc/head.php';
 include_once '../inc/navigationclass.php';
 include_once '../utility/DB.php';
 $db = new DB;
 
-
-
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     if ($_GET['id'] == 1) {
         include_once 'products.php';
     } elseif ($_GET['id'] == 2) {
@@ -24,11 +23,14 @@ if (isset($_GET['id'])) {
         include_once 'userManagement.php';
     } elseif ($_GET['id'] == 8) {
         include_once 'voucherManagement.php';
-    }else if ($_GET['id'] == 9){
+    } else if ($_GET['id'] == 9) {
         include_once'userOrders.php';
+    } else if ($_GET['id'] == 11) {
+        include_once 'billDetails.php';
     }
-} else include_once 'homepage.php';
+} else
+    include_once 'homepage.php';
 
-
-include_once '../inc/footer.php' ?>
+include_once '../inc/footer.php'
+?>
 

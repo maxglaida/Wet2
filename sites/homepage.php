@@ -15,7 +15,7 @@
 
                     echo "<div class='col-md-3'>";
                     echo "<h4 class='productheading'>" . $product->getName() . "</h4>";
-                    echo "<img src='../" . $product->getPicture() . "' alt='Tomato' class='img-thumb' />";
+                    echo "<img src='../" . $product->getPicture() . "' alt='" . $oneProduct->getName() . "' class='img-thumb' />";
                     echo "<p class='price'>Price $" . $product->getPrice() . "</p>";
                     echo "<p class='price'>Rating:" . $product->getRating() . "</p>";
                     echo "<button class='btn btn-warning' type='submit'><span class='glyphicon glyphicon-shopping-cart'></span>Add To Cart</button>";
