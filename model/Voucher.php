@@ -1,19 +1,20 @@
 <?php
 
-class Voucher {
-    
-    
+class Voucher
+{
+
+
     private $code;
     private $val;
     private $validDate;
-    
-     public function __construct($code, $val, $validDate)
+
+    public function __construct($code, $val, $validDate)
     {
         $this->code = $code;
         $this->val = $val;
         $this->validDate = $validDate;
     }
-    
+
     public function getCode()
     {
         return $this->code;
@@ -26,7 +27,7 @@ class Voucher {
     {
         $this->code = $code;
     }
-    
+
     public function getVal()
     {
         return $this->val;
@@ -39,7 +40,7 @@ class Voucher {
     {
         $this->val = $val;
     }
-    
+
     public function getValidDate()
     {
         return $this->validDate;
@@ -52,5 +53,5 @@ class Voucher {
     {
         $this->validDate = $validDate;
     }
-    
+
 }

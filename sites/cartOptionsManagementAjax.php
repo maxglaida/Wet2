@@ -1,7 +1,10 @@
 <?php
+//starting the sessions
 session_start();
 include_once '../utility/DB.php';
 $db = new DB();
+
+// check if the values are set correctly and then act based on the action that was passed, either delete or change amount of item in the cart
 if (isset($_POST['toDo']) && $_POST['toDo'] != "" && isset($_POST['pid']) && $_POST['pid'] != "") {
     $ProduktID = $_POST['pid'];
     if (isset($_SESSION['cart'][$ProduktID])) {
@@ -19,9 +22,9 @@ if (isset($_POST['toDo']) && $_POST['toDo'] != "" && isset($_POST['pid']) && $_P
         }
     }
 }
-
+// echo out shopping cart after the changes.
 echo "<table class='table table-striped'>";
-echo "<th>Product Name</th><th>Bild</th><th>Price</th><th>amount</th><th>Price</th><th></th>";
+echo "<th>Product Name</th><th>Photo</th><th>Price</th><th>amount</th><th>Price</th><th></th>";
 
 $sum = 0;
  if (isset($_SESSION['cart'])) {       

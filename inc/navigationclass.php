@@ -1,7 +1,9 @@
 <?php
 
 class navigation{
+// creating a navigation class.
 
+// the load xml function is triggered and based on the parameter that was passed from the session it is decided which menu to display
     function loadXML($who){
         $xml = simplexml_load_file('../config/navigation.xml');
         if($who=="visitor"){
@@ -33,18 +35,18 @@ class navigation{
     <ul class="nav navbar-nav">
 
         <?php
-
+        //checking who is the user
         if(isset($_SESSION['priviliges'])) {
             if($_SESSION['priviliges'] == 1) {
                 $who = 'user';
             } else
                 $who = 'admin';
-        }else $who = 'visitor'; //   später dynamisch--> entweder visitor, user oder admin
+        }else $who = 'visitor';
 
-
+        // creating a new navigation object and loading the xml.
         $nav = new Navigation();
         $nav->loadXML($who);
-
+        //  generating the shopping cart icon with the amount of items that currently exist in the session.
         ?>
     </ul>
     <div class="droppable">

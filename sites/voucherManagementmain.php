@@ -1,89 +1,71 @@
-<div class="col-md-5">
-<form action="" method="POST">
-  <div class="form-group">
-    <label for="val">Amount</label>
-    <input type="value" name="val" value="" class="form-control" id="val" placeholder="Amount in bitcoins">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Days Valid</label>
-    <input type="number" name="validDate" class="form-control" id="validDate" placeholder="Valid days">
-  </div>
-    <button type="submit" value="submit" class="btn btn-default">set new voucher</button>
-</form>
-</div>
-</form>
 <?php
-
-
 include_once '../utility/DB.php';
 $db = new DB();
-//Aktuelles Datum herausfinden
+//Get all vouchers from DB
+$voucherArray = $db->getAllVouchers();
+
+//Set a timestamp
 date_default_timezone_set("Europe/Vienna");
 $timestamp = time();
-$datum = date("Y-m-d", $timestamp);
+$todaysDate = date("Y-m-d", $timestamp);
 
-//Überprüfen, ob ein Gutschein Gespeichert werden soll, die notwendigen Daten angegeben sind und diesen gegebenenfalls speichern
+//check if the voucher fields are filled correctly
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'submit') {
         if ($_POST['val'] == "" && $_POST['validDate'] == "") {
-            echo "Bitte geben Sie die Anzahl der Gültigkeit und den Wert an!";
+            echo "please fill in both required fields";
         } elseif ($_POST['val'] != "" && $_POST['validDate'] == "") {
-            echo "Bitte geben Sie ein gültige Anzahl für die Gültigkeit des Gutscheines an!";
+            echo "Please fill in a valid amount of valid days";
         } elseif ($_POST['val'] == "" && $_POST['validDate'] != "") {
-            echo "Bitte geben Sie ein gültigen Wert für den Gutschein an!";
+            echo "Please fill in the value for the voucher";
         } else {
             $date = date("Y-m-d", time() + 60 * 60 * 24 * $_POST['validDate']);
             $db = new DB();
-            $db->newVoucher($_POST['val'], $date);
+            $db->setNewVoucher($_POST['val'], $date);
         }
     }
 }
 ?>
-<!--Daten aller Gutscheine aus der DB holen und mit einer Tabelle darstellen-->
-<div class="col-md-8">
-    <h2>Übersicht</h2>
-<?php
-$db = new DB();
-$allGutscheine = $db->getAllGutscheine();
+<!-- generate the voucher form -->
 
-//var_dump($allGutscheine);
-?>
+<div class="col-md-12">
+    <div class="col-md-5">
+        <form action="index.php?id=8" method="POST">
+            <div class="form-group">
+                <label for="val">Amount</label>
+                <input type="number" name="val" value="" class="form-control" id="val" placeholder="Amount in bitcoins">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Days Valid</label>
+                <input type="number" name="validDate" class="form-control" id="validDate" placeholder="Valid days">
+            </div>
+            <button type="submit" value="submit" name="submit" class="btn btn-default">set new voucher</button>
+        </form>
+    </div>
+    </form>
+</div>
+
+<!-- generate all vouchers from db -->
+
+<div class="col-md-12">
+    <h2>All stored vouchers in DB</h2>
     <table class="table table-striped">
         <tr>
-            <th>
-                GutscheinID 
-            </th>
-            <th>
-                Code
-            </th>
-            <th>
-                Wert
-            </th>
-            <th>
-                Restwert
-            </th>
-            <th>
-                Gültigkeit
-            </th>
+            <th>Code</th>
+            <th>Value</th>
+            <th>Valid until</th>
         </tr>
-<?php
-foreach ($allGutscheine as $gutschein) {
-    //Überprüfen, ob der Gutschein abgelaufen ist, wenn ja, dann rot markieren
-    if ($gutschein->getDauer() < $datum) {
-        echo "<tr class='danger'>";
-        //Überprüfen, ob der Gutschein komplett aufgebraucht worden ist, wenn ja gelb markieren
-    } elseif ($gutschein->getRestwert() <= 0) {
-        echo "<tr class='warning'>";
-    } else {
-        echo "<tr>";
-    }
-    echo "<td>" . $voucher->getGutscheinID() . "</td>";
-    echo "<td>" . $voucher->getCode() . "</td>";
-    echo "<td>" . $voucher->getWert() . "</td>";
-    echo "<td>" . $voucher->getDauer() . "</td>";
-    echo "</tr>";
-}
-?>
+
+        <?php
+        //display all the vouchers from the DB
+        foreach ($voucherArray as $voucher) {
+
+            echo "<td>" . $voucher->getCode() . "</td>";
+            echo "<td>" . $voucher->getVal() . " $</td>";
+            echo "<td>" . $voucher->getValidDate() . "</td>";
+            echo "</tr>";
+        }
+        ?>
 
     </table>
 </div>

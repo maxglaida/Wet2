@@ -1,12 +1,7 @@
 <?php
-
+// starting the sessions
 session_start();
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+// checking if the posted values are valid and already exist or not
 if(isset($_POST['p_id'])&&isset($_POST['amount'])&&$_POST['p_id']!=""&&$_POST['amount']!="")
 {
     $amount;
@@ -26,7 +21,7 @@ if(isset($_POST['p_id'])&&isset($_POST['amount'])&&$_POST['p_id']!=""&&$_POST['a
 
         }
         else{
-            //Hier wird der Artikel mitsamt Daten gespeichert
+            //saving a new product in the session
             $_SESSION['cart'][$_POST['p_id']] = $amount;
             if(isset($_SESSION['amount']))
             {
@@ -42,4 +37,5 @@ if(isset($_POST['p_id'])&&isset($_POST['amount'])&&$_POST['p_id']!=""&&$_POST['a
 
     }
 }
+// echoing out the new amount on the shopping cart icon
 echo '<li id="warenkorb" class="droppable" role="presentation"><a href="index.php?id=10">Shopping Cart  <span class="badge">'.$_SESSION['amount'].' </span></a></li>';

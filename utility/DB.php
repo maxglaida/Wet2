@@ -1,34 +1,39 @@
 <?php
 
+include_once '../model/Voucher.php';
 include_once '../model/Produkt.php';
 include_once '../model/Order.php';
 include_once '../model/Address.php';
 
-class DB {
-
+class DB
+{
+    // in this dB class we have all our function that have an interaction with the DB
     private $host = "localhost";
     private $user = "root";
     private $pwd = "MtWBUGZKZL1Np8bk";
     private $dbname = "Wet2";
     private $dbobjekt = null;
-
-    function connectToDB() {
+    //setting a connection to the db
+    function connectToDB()
+    {
         $this->dbobjekt = new mysqli($this->host, $this->user, $this->pwd, $this->dbname);
     }
-
-    function deActivateUser($id, $status) {
+    //Deactivating a user from user management
+    function deActivateUser($id, $status)
+    {
         $this->connectToDB();
         if ($status == 1) {
             $query = "update user set status = 0 "
-                    . "where user_id =" . $id;
+                . "where user_id =" . $id;
         } else {
             $query = "update user set status = 1 "
-                    . "where user_id =" . $id;
+                . "where user_id =" . $id;
         }
         $this->dbobjekt->query($query);
     }
 
-    function getUserList() {
+    function getUserList()
+    {
         $this->connectToDB();
         $userArray = array();
         $query = "select * from user "
@@ -43,48 +48,78 @@ class DB {
         }
         return $userArray;
     }
-    function getProducts($id) {
+
+    function getProducts($id)
+    {
         $this->connectToDB();
         $productArray = array();
         $query = "SELECT * FROM products WHERE products_id = $id";
         $ergebnis = $this->dbobjekt->query($query);
         while ($zeile = $ergebnis->fetch_object()) {
-            
+
             $products = new Produkt($zeile->products_id, $zeile->name, $zeile->price, $zeile->categoryid, $zeile->picture, $zeile->rating, $zeile->featured);
+        }
+        return $products;
     }
-         return $products;
-    }
-            
-    function getFeaturedProductsList() {
+    // generates the products that are categoriezed as featured in the DB and returns them as a product array
+    function getFeaturedProductsList()
+    {
         $this->connectToDB();
         $productArray = array();
         $query = "SELECT * FROM products WHERE Featured = 1";
         $ergebnis = $this->dbobjekt->query($query);
         while ($zeile = $ergebnis->fetch_object()) {
-            //pro DB-Zeile wird neues User-Objekt erzeugt
+
             $products = new Produkt($zeile->products_id, $zeile->name, $zeile->price, $zeile->categoryid, $zeile->picture, $zeile->rating, $zeile->featured);
-            //jedes User-Objekt wird in das Array $userArray abgelegt
+
             array_push($productArray, $products);
         }
 
-        //Array befüllt mit User-Objekten wird retourniert
+
         return $productArray;
     }
-    
-    function getAllVouchers() {
+
+    //Get all vouchers from the database.
+    function getAllVouchers()
+    {
+        $this->connectToDB();
+        $voucherArray = array();
+        $query = "SELECT * FROM voucher";
+        $ergebnis = $this->dbobjekt->query($query);
+        while ($zeile = $ergebnis->fetch_object()) {
+
+            $voucher = new Voucher($zeile->code, $zeile->value, $zeile->validdate);
+
+            array_push($voucherArray, $voucher);
+
+
+        }
         return $voucherArray;
     }
-    
-    function setNewVoucher($wert,$date) {
-        
-        $this->connectToDB();
 
-        $query = "INSERT INTO address (address, zip, city) "
-                . "VALUES ('" . $userObjekt->getAddress() . "'," . $userObjekt->getZip() . ",'" . $userObjekt->getCity() . "')";
-        
+    // generate a random voucher and using the passed parameters add it to the DB
+    function setNewVoucher($wert, $date)
+    {
+        echo $wert;
+        echo $date;
+        //generate
+        $characters = 'ACEFHJKMNPRTUVWXY4937';
+        $string = '';
+        for ($i = 0; $i < 6; $i++) {
+            $string .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        echo $string;
+
+        $this->connectToDB();
+        $query = "INSERT INTO voucher (code, value, validdate) "
+            . "VALUES ('" . $string . "'," . $wert . ",'" . $date . "')";
+
+        $this->dbobjekt->query($query);
+
     }
 
-    function deleteProduct($product, $invoice) {
+    function deleteProduct($product, $invoice)
+    {
         $this->connectToDB();
         $query = "select count(*) as count from orderedproducts where invoice_id=$invoice";
         $ergebnis = $this->dbobjekt->query($query);
@@ -99,7 +134,8 @@ class DB {
         $this->dbobjekt->query($query);
     }
 
-    function getOrderInfo($id) {
+    function getOrderInfo($id)
+    {
         $this->connectToDB();
         $query = "select * from bestellung 
                   join orderedproducts using(invoice_id) 
@@ -116,7 +152,8 @@ class DB {
         return $Order;
     }
 
-    function getAddressByUserId($userid) {
+    function getAddressByUserId($userid)
+    {
         $this->connectToDB();
         $query = "select address.* from user join person on user.p_id=person.person_id join address on address.address_id=person.a_id  where user_id=$userid";
         $ergebnis = $this->dbobjekt->query($query);
@@ -126,7 +163,8 @@ class DB {
         return $address;
     }
 
-    function getProductsByInvoice($id) {
+    function getProductsByInvoice($id)
+    {
 
         $this->connectToDB();
         $orderArray = array();
@@ -145,8 +183,9 @@ class DB {
         }
         return $orderArray;
     }
-
-    function getProductList($category) {
+    // generates a list of products based on the category that the client chooses in the product page
+    function getProductList($category)
+    {
 
         $this->connectToDB();
         $productArray = array();
@@ -161,17 +200,18 @@ class DB {
 
         foreach ($productArray as $product) {
 
-            echo "<div class='col-md-3 draggable' id='".$product->getId()."'>";
+            echo "<div class='col-md-3 draggable' id='" . $product->getId() . "'>";
             echo "<h4 class='productheading'>" . $product->getName() . "</h4>";
             echo "<img src='../" . $product->getPicture() . "' alt='Tomato' class='img-thumb' />";
             echo "<p class='price'>Price $" . $product->getPrice() . "</p>";
             echo "<p class='price'>Rating:" . $product->getRating() . "</p>";
-            echo "<button class='btn btn-warning' onclick='addProductsToCart(".$product->getId().")' type='submit'><span class='glyphicon glyphicon-shopping-cart'></span>Add To Cart</button>";
+            echo "<button class='btn btn-warning' onclick='addProductsToCart(" . $product->getId() . ")' type='submit'><span class='glyphicon glyphicon-shopping-cart'></span>Add To Cart</button>";
             echo "</div >";
         }
     }
 
-    function getAllProducts() {
+    function getAllProducts()
+    {
         $this->connectToDB();
         $productArray = array();
         $query = "select * from products join productcategory on products.categoryid=productcategory.productcategory_id";
@@ -182,10 +222,11 @@ class DB {
             //jedes User-Objekt wird in das Array $userArray abgelegt
             array_push($productArray, $product);
         }
-        return$productArray;
+        return $productArray;
     }
-
-    function getSearchedProducts($searchString) {
+    // get the searched products using ajax on the continius product search
+    function getSearchedProducts($searchString)
+    {
         $this->connectToDB();
         $productArray = array();
         $query = "SELECT * FROM products WHERE name LIKE '%$searchString%'";
@@ -199,17 +240,18 @@ class DB {
 
         foreach ($productArray as $product) {
 
-            echo "<div class='col-md-3 draggable' id='".$product->getId()."'>";
+            echo "<div class='col-md-3 draggable' id='" . $product->getId() . "'>";
             echo "<h4 class='productheading'>" . $product->getName() . "</h4>";
             echo "<img src='../" . $product->getPicture() . "' alt='Tomato' class='img-thumb' />";
             echo "<p class='price'>Price $" . $product->getPrice() . "</p>";
             echo "<p class='price'>Rating:" . $product->getRating() . "</p>";
-            echo "<button class='btn btn-warning' type='submit'><span class='glyphicon glyphicon-shopping-cart'></span>Add To Cart</button>";
+            echo "<button class='btn btn-warning' onclick='addProductsToCart(" . $product->getId() . ")' type='submit'><span class='glyphicon glyphicon-shopping-cart'></span>Add To Cart</button>";
             echo "</div >";
         }
     }
-
-    function getCategories() {
+    // get the product categories that exist in the DB
+    function getCategories()
+    {
         $this->connectToDB();
 
         $sql = "SELECT * FROM productcategory";
@@ -225,7 +267,8 @@ class DB {
             echo "Es gibt ein fehlar bei zugriff!";
     }
 
-    function checkUser($user, $pw) {
+    function checkUser($user, $pw)
+    {
         $this->connectToDB();
         $query = "select * from user where username = '$user' and password = '$pw' and status = 1";
         $ergebnis = $this->dbobjekt->query($query);
@@ -251,7 +294,8 @@ class DB {
         }
     }
 
-    function getUserInfo($id) {
+    function getUserInfo($id)
+    {
 
         $this->connectToDB();
         $query = "select * from user "
@@ -276,7 +320,8 @@ class DB {
         return $userInfoObject = new User($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status);
     }
 
-    function getBillId($orderid, $userid) {
+    function getBillId($orderid, $userid)
+    {
         $this->connectToDB();
         $billId = null;
         $query = "select id from bill where invoice_id=$orderid";
@@ -284,7 +329,8 @@ class DB {
 
         while ($zeile = $ergebnis->fetch_object()) {
             $billId = $zeile->id;
-        }if (!isset($billId)) {
+        }
+        if (!isset($billId)) {
             $randnr = rand(1000, 10000);
             $billId = "RN$randnr";
             $query = "insert into bill values ('$billId', $userid, $orderid, curdate())";
@@ -295,11 +341,11 @@ class DB {
         return $billId;
     }
 
-    function showOrders($userid) {
+    function showOrders($userid)
+    {
         $this->connectToDB();
         $ordersArray = array();
-        $query = "select invoice_id, datum from bestellung join user using(user_id) where user_id=$userid order by datum";
-        ;
+        $query = "select invoice_id, datum from bestellung join user using(user_id) where user_id=$userid order by datum";;
         $ergebnis = $this->dbobjekt->query($query);
         while ($zeile = $ergebnis->fetch_object()) {
             //pro DB-Zeile wird neues User-Objekt erzeugt
@@ -310,7 +356,8 @@ class DB {
         return $ordersArray;
     }
 
-    function registerUser($userObjekt) {
+    function registerUser($userObjekt)
+    {
         $this->connectToDB();
 
         $query = "INSERT INTO address (address, zip, city) "
@@ -343,7 +390,8 @@ class DB {
         $this->dbobjekt->query($query);
     }
 
-    function updateUser($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status) {
+    function updateUser($id, $gender, $name, $surname, $email, $address, $zip, $city, $username, $password, $payment, $status)
+    {
         $this->connectToDB();
         $query = "update user set username = '$username', "
             . "password = '$password' "
